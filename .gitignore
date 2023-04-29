@@ -19,3 +19,14 @@
 
 # Go workspace file
 go.work
+
+.idea
+.cache
+.vscode
+
+output
+target
+generated
+
+src/zk_leader_election/idl/*/*.go
+

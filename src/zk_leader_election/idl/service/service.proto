@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+option go_package = "github.com/cxp863/zk_leader_election/src/zk_leader_election/idl/service";
+
+package zk_leader_election.idl.server.proto;
+
+enum ResponseCode {
+  kOk = 0;
+  kError = 201;
+}
+
+message GreetRequest {
+  string message = 1;
+}
+
+message GreetResponse {
+  ResponseCode code = 1;
+  string message = 2;
+}
+
+service GreetService {
+  rpc Greeting(GreetRequest) returns (GreetResponse);
+}
