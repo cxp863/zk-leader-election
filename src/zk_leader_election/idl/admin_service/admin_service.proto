@@ -1,0 +1,49 @@
+syntax = "proto3";
+
+option go_package = "github.com/cxp863/zk_leader_election/src/zk_leader_election/idl/admin_service";
+
+package zk_leader_election.idl.admin_service.proto;
+
+enum ResponseCode {
+  kOk = 0;
+  kUnknownError = 100;
+  kNotExist = 101;
+  kTimeoutError = 102;
+  kQPSLimitError = 103;
+  kSystemError = 104;
+  kNotLeaderError = 105;
+  kInvalidParamError = 106;
+}
+
+message ResponseStatus {
+  ResponseCode code = 1;
+  string message = 2;
+}
+
+message ShutdownRequest {
+}
+
+message ShutdownResponse {
+  ResponseStatus status = 1;
+}
+
+message GetLeaderRequest {
+}
+
+message GetLeaderResponse {
+  ResponseStatus status = 1;
+  string leader = 2;
+}
+
+message ResignLeaderRequest {
+}
+
+message ResignLeaderResponse {
+  ResponseStatus status = 1;
+}
+
+service AdminService {
+  rpc Shutdown(ShutdownRequest) returns (ShutdownResponse);
+  rpc GetLeader(GetLeaderRequest) returns (GetLeaderResponse);
+  rpc ResignLeader(ResignLeaderRequest) returns (ResignLeaderResponse);
+}

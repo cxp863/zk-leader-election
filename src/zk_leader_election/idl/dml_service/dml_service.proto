@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+option go_package = "github.com/cxp863/zk_leader_election/src/zk_leader_election/idl/dml_service";
+
+package zk_leader_election.idl.dml_service.proto;
+
+enum ResponseCode {
+  kOk = 0;
+  kUnknownError = 200;
+  kNotFound = 201;
+  kTimeoutError = 202;
+  kQPSLimitError = 203;
+  kSystemError = 204;
+  kNotLeaderError = 205;
+  kInvalidParamError = 206;
+}
+
+message ResponseStatus {
+  ResponseCode code = 1;
+  string message = 2;
+}
+
+message DemoData {
+  string key = 1;
+  string value = 2;
+}
+
+message CreateRequest {
+  DemoData data = 1;
+}
+
+message CreateResponse {
+  ResponseStatus status = 1;
+}
+
+message ReadRequest {
+  string key = 1;
+}
+
+message ReadResponse {
+  ResponseStatus status = 1;
+  DemoData data = 2;
+}
+
+message UpdateRequest {
+  DemoData data = 1;
+}
+
+message UpdateResponse {
+  ResponseStatus status = 1;
+}
+
+message DeleteRequest {
+  string key = 1;
+}
+
+message DeleteResponse {
+  ResponseStatus status = 1;
+}
+
+service DMLService {
+  rpc Create(CreateRequest) returns (CreateResponse);
+  rpc Read(ReadRequest)     returns (ReadResponse);
+  rpc Update(UpdateRequest) returns (UpdateResponse);
+  rpc Delete(DeleteRequest) returns (DeleteResponse);
+}
