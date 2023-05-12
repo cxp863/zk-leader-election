@@ -3,6 +3,7 @@ module zk-leader-election
 go 1.19
 
 require (
+	github.com/go-zookeeper/zk v1.0.3
 	github.com/spf13/cobra v1.7.0
 	go.uber.org/zap v1.24.0
 	google.golang.org/grpc v1.54.0

@@ -1,11 +1,13 @@
 package cmd
 
 import (
-	"github.com/spf13/cobra"
-	"google.golang.org/grpc"
 	"net"
+
 	rpcSrv "zk-leader-election/src/zk_leader_election/idl/dml_service"
 	implSrv "zk-leader-election/src/zk_leader_election/server/dml_service"
+
+	"github.com/spf13/cobra"
+	"google.golang.org/grpc"
 )
 
 var rootCmd = &cobra.Command{
