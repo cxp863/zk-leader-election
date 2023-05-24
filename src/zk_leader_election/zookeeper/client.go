@@ -54,11 +54,34 @@ func (c *client) Create(relativePath string, data []byte, ephemeral, sequence bo
 	}
 
 	absolutePath := paths.Join(c.prefix, relativePath)
-	if !strings.HasSuffix(absolutePath, "/") {
+	if sequence && !strings.HasSuffix(absolutePath, "/") {
 		absolutePath += "/"
 	}
 
+	path, _ := paths.Split(absolutePath)
+	path, err := c.createPath(path)
+	if err != nil {
+		return path, err
+	}
 	return c.conn.Create(absolutePath, data, flags, zk.WorldACL(zk.PermAll))
+}
+
+// createPath 递归创建路径
+func (c *client) createPath(absolutePath string) (string, error) {
+	absolutePath = strings.TrimSuffix(absolutePath, "/")
+
+	if exist, _, err := c.conn.Exists(absolutePath); err != nil {
+		return absolutePath, err
+	} else if exist {
+		return absolutePath, nil
+	} else {
+		path, _ := paths.Split(absolutePath)
+		if path, err := c.createPath(path); err != nil {
+			return path, err
+		}
+		_, err := c.conn.Create(absolutePath, nil, 0, zk.WorldACL(zk.PermAll))
+		return absolutePath, err
+	}
 }
 
 func (c *client) Read(relativePath string) ([]byte, *zk.Stat, error) {
